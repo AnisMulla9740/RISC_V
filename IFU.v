@@ -1,0 +1,20 @@
+`include "INST_MEM.v"
+
+module IFU(
+    input clock, reset,
+    output [31:0] Instruction_Code
+);
+    reg[31:0] PC = 32'b0;       //32 bit program counter is initialized to zero
+    
+    //Initializing the instruction memory block
+    INST_MEM instr_mem(PC, reset, Instruction_Code);
+    
+    always @(posedge clock, posedge reset)
+    begin
+        if(reset == 1)          //if reset is one, clear the program counter
+            PC <= 0;
+        else 
+            PC <= PC+4;          //increment program counter on positive clock edge
+    end
+    
+endmodule
